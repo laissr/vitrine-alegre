@@ -10,13 +10,15 @@ export default function Rodape() {
             <span className="logo-texto-branco">Vitrine</span>
             <span className="logo-texto-verde">Alegre</span>
           </div>
-          <p className="rodape-projeto">Projeto acadêmico · Ifes Campus de Alegre · TADS[cite: 7]</p>
+          <p className="rodape-projeto">
+            Projeto acadêmico · Ifes Campus de Alegre · TADS
+          </p>
         </div>
 
         {/* Bloco direito: avisos legais sobre a origem dos dados da API e fito fictional dos produtos */}
         <div className="rodape-info-direita">
-          <p>Dados: dummyjson.com[cite: 7]</p>
-          <p>Imagens e produtos são fictícios[cite: 7]</p>
+          <p>Dados: dummyjson.com</p>
+          <p>Imagens e produtos são fictícios</p>
         </div>
       </div>
     </footer>

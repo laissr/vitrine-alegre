@@ -1847,9 +1847,55 @@ body {
    ========================================== */
 @media (max-width: 768px) {
   .btn-menu-hamburger {
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
+  }
+
+  .desktop-usuario-area {
+    display: none !important;
+  }
+
+  /* Estilo do menu suspenso do celular */
+  .mobile-menu-dropdown {
+    display: flex;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-bottom: 1px solid var(--cor-borda);
+    padding: 12px 16px;
+    gap: 6px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .mobile-menu-user-info {
+    font-size: 0.9rem;
+    color: var(--cor-primaria);
+    padding: 8px 12px;
+    font-weight: 500;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 4px;
+  }
+
+  .mobile-menu-item {
+    background: transparent;
+    border: none;
+    text-align: left;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #334155;
+    cursor: pointer;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .mobile-menu-item:hover {
+    background: #f1f5f9;
+    color: var(--cor-primaria);
+  }
+
+  .mobile-menu-item.sair {
+    color: #dc2626;
   }
 
   .desktop-only,
@@ -1866,13 +1912,13 @@ body {
   }
 
   body {
-    padding-top: 125px;
+    padding-top: 110px !important;
   }
 
   .mobile-busca {
     display: flex !important;
-    width: calc(100% - 32px);
-    margin: 12px auto 4px auto;
+    width: calc(100% - 24px) !important;
+    margin: 8px auto 4px auto !important;
     background-color: var(--cor-superficie);
     border: 1px solid var(--cor-borda);
     border-radius: 8px;
@@ -1880,16 +1926,27 @@ body {
   }
 
   .cabecalho-conteudo {
-    padding: 0 16px;
-    flex-wrap: wrap;
-    gap: 12px;
+    padding: 0 12px !important;
+    flex-wrap: nowrap !important;
+    justify-content: space-between !important;
+    gap: 8px !important;
   }
 
   .acoes-header {
-    gap: 12px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .acoes-header button[type="button"] {
+    font-size: 0.78rem !important;
+    white-space: nowrap !important;
   }
 
   .btn-carrinho-header {
+    padding: 6px 10px !important;
+    gap: 6px !important;
+    font-size: 0.8125rem !important;
     border: none !important;
   }
 

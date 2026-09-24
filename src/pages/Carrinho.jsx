@@ -14,7 +14,7 @@ export default function Carrinho() {
     total,
   } = useCarrinho();
 
-  // Condicional: Se o carrinho estiver vazio, exibe uma tela de alerta amigável com link para a vitrine
+  // Condicional: Se o carrinho estiver vazio, exibe uma tela de alerta amigável com link para a vitrine[cite: 14]
   if (itens.length === 0) {
     return (
       <main className="container-principal">
@@ -37,15 +37,27 @@ export default function Carrinho() {
     );
   }
 
-  // Cálculos auxiliares para exibição de contadores e parcelamento
+  // Cálculos auxiliares para exibição de contadores e parcelamento[cite: 14]
   const tiposProdutos = itens.length;
   const precoParcela = (total / 12).toFixed(2).replace('.', ',');
 
   const handleFinalizarWhatsApp = () => {
-    // Substitua pelo número da loja com DDI e DDD (ex: 5527999999999)
+    // Salva o pedido no localStorage com o status "Aguardando pagamento"
+    const novoPedido = {
+      id: Math.floor(100000 + Math.random() * 900000), // ID aleatório de 6 dígitos
+      data: new Date().toLocaleDateString('pt-BR'),
+      itens: [...itens],
+      total: total,
+      status: 'Aguardando pagamento'
+    };
+
+    const pedidosAnteriores = JSON.parse(localStorage.getItem('meus_pedidos') || '[]');
+    localStorage.setItem('meus_pedidos', JSON.stringify([novoPedido, ...pedidosAnteriores]));
+
+    // Substitua pelo número da loja com DDI e DDD (ex: 5527999999999)[cite: 14]
     const numeroWhatsApp = "5527999999999"; 
 
-    // Monta a lista de produtos formatada
+    // Monta a lista de produtos formatada[cite: 14]
     let mensagem = "*Olá! Gostaria de finalizar o meu pedido:*%0A%0A";
 
     itens.forEach((item) => {
@@ -53,17 +65,17 @@ export default function Carrinho() {
       mensagem += `• ${item.quantidade}x *${item.title}* - R$ ${subtotalItem.toFixed(2).replace('.', ',')}%0A`;
     });
 
-    // Adiciona o valor total do pedido
+    // Adiciona o valor total do pedido[cite: 14]
     mensagem += `%0A*Total do Pedido:* R$ ${total.toFixed(2).replace('.', ',')}`;
 
-    // Codifica a mensagem para o formato de URL e abre o WhatsApp
+    // Codifica a mensagem para o formato de URL e abre o WhatsApp[cite: 14]
     const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
     window.open(urlWhatsApp, '_blank');
   };
 
   return (
     <main className="container-principal">
-      {/* Cabeçalho superior do carrinho contendo o título, subtitulação e link para continuar comprando */}
+      {/* Cabeçalho superior do carrinho contendo o título, subtitulação e link para continuar comprando[cite: 14] */}
       <div className="carrinho-topo-header">
         <div className="carrinho-titulo-container">
           <h1 className="carrinho-titulo-principal">Seu carrinho</h1>
@@ -76,9 +88,9 @@ export default function Carrinho() {
         </Link>
       </div>
 
-      {/* Layout principal em grade dividindo a lista de produtos (esquerda) e o resumo financeiro (direita) */}
+      {/* Layout principal em grade dividindo a lista de produtos (esquerda) e o resumo financeiro (direita)[cite: 14] */}
       <div className="carrinho-grid-layout">
-        {/* Caixa contendo a listagem de todos os itens adicionados */}
+        {/* Caixa contendo a listagem de todos os itens adicionados[cite: 14] */}
         <div className="carrinho-caixa-lista">
           {itens.map((item, index) => {
             const precoUnitario = item.price;
@@ -89,7 +101,7 @@ export default function Carrinho() {
                 key={item.id} 
                 className={`carrinho-item-linha ${index !== itens.length - 1 ? 'com-borda' : ''}`}
               >
-                {/* Miniatura da imagem do produto com link para os detalhes */}
+                {/* Miniatura da imagem do produto com link para os detalhes[cite: 14] */}
                 <Link to={`/produto/${item.id}`} className="carrinho-item-miniatura-box">
                   <img
                     src={item.thumbnail}
@@ -98,13 +110,13 @@ export default function Carrinho() {
                   />
                 </Link>
 
-                {/* Informações detalhadas do item (categoria, título e preço unitário) */}
+                {/* Informações detalhadas do item (categoria, título e preço unitário)[cite: 14] */}
                 <div className="carrinho-item-infos">
                   <span className="carrinho-item-categoria">
                     {item.category || 'SMARTPHONES'}
                   </span>
                   
-                  {/* Título do produto com link para os detalhes */}
+                  {/* Título do produto com link para os detalhes[cite: 14] */}
                   <Link to={`/produto/${item.id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
                     <h3 className="carrinho-item-nome">{item.title}</h3>
                   </Link>
@@ -114,7 +126,7 @@ export default function Carrinho() {
                   </span>
                 </div>
 
-                {/* Seletor numérico de quantidade com botões de decrementar (-) e incrementar (+) */}
+                {/* Seletor numérico de quantidade com botões de decrementar (-) e incrementar (+)[cite: 14] */}
                 <div className="controle-qtd carrinho-qtd-ajuste">
                   <button
                     type="button"
@@ -131,12 +143,12 @@ export default function Carrinho() {
                   </button>
                 </div>
 
-                {/* Valor total acumulado para este item específico */}
+                {/* Valor total acumulado para este item específico[cite: 14] */}
                 <div className="carrinho-item-valor-total">
                   <span>R$ {subtotalItem.toFixed(2).replace('.', ',')}</span>
                 </div>
 
-                {/* Botão de remoção rápida do item do carrinho */}
+                {/* Botão de remoção rápida do item do carrinho[cite: 14] */}
                 <button
                   type="button"
                   className="btn-remover-item"
@@ -150,7 +162,7 @@ export default function Carrinho() {
           })}
         </div>
 
-        {/* Cartão lateral de resumo financeiro do pedido */}
+        {/* Cartão lateral de resumo financeiro do pedido[cite: 14] */}
         <aside className="carrinho-resumo-card">
           <h2 className="resumo-titulo">Resumo do pedido</h2>
           
@@ -171,7 +183,7 @@ export default function Carrinho() {
 
           <div className="resumo-divisor"></div>
 
-          {/* Versão completa para Desktop */}
+          {/* Versão completa para Desktop[cite: 14] */}
           <div className="resumo-linha total-geral desktop-only">
             <span>Total</span>
             <div className="total-valores-coluna">
@@ -180,7 +192,7 @@ export default function Carrinho() {
             </div>
           </div>
 
-          {/* Versão simplificada exclusiva para o Mobile */}
+          {/* Versão simplificada exclusiva para o Mobile[cite: 14] */}
           <div className="resumo-linha total-geral mobile-resumo-visivel">
             <span className="total-itens-texto">Total ({quantidadeTotal} {quantidadeTotal === 1 ? 'item' : 'itens'})</span>
             <span className="total-preco-principal">R$ {total.toFixed(2).replace('.', ',')}</span>
@@ -194,7 +206,7 @@ export default function Carrinho() {
             Finalizar compra
           </button>
 
-          {/* Botão para limpar tudo */}
+          {/* Botão para limpar tudo[cite: 14] */}
           <button
             type="button"
             className="btn-limpar-carrinho"

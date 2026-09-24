@@ -13,10 +13,10 @@ export default function Header() {
   const [termo, setTermo] = useState(buscaUrl);
   const [usuarioLogado, setUsuarioLogado] = useState(null);
   const [mostrarMenuUsuario, setMostrarMenuUsuario] = useState(false);
+  const [menuMobileAberto, setMenuMobileAberto] = useState(false);
   
   const menuUsuarioRef = useRef(null);
 
-  // Monitora a rota e o localStorage para atualizar o estado do usuário logado[cite: 2]
   useEffect(() => {
     setTermo(buscaUrl);
     const usuario = localStorage.getItem('usuario_logado');
@@ -27,7 +27,6 @@ export default function Header() {
     }
   }, [location]);
 
-  // Fecha o menu do usuário se clicar fora dele
   useEffect(() => {
     function handleClickFora(event) {
       if (menuUsuarioRef.current && !menuUsuarioRef.current.contains(event.target)) {
@@ -42,6 +41,7 @@ export default function Header() {
     localStorage.removeItem('usuario_logado');
     setUsuarioLogado(null);
     setMostrarMenuUsuario(false);
+    setMenuMobileAberto(false);
     navigate('/');
   };
 
@@ -65,7 +65,13 @@ export default function Header() {
       <header className="cabecalho">
         <div className="cabecalho-conteudo">
           <div className="logo-e-menu">
-            <button type="button" className="btn-menu-hamburger" aria-label="Menu">
+            {/* Botão Hambúrguer visível apenas no mobile via CSS */}
+            <button
+              type="button"
+              className="btn-menu-hamburger"
+              onClick={() => setMenuMobileAberto(!menuMobileAberto)}
+              aria-label="Menu"
+            >
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -104,66 +110,69 @@ export default function Header() {
           </div>
 
           <div className="acoes-header">
-            {/* Se estiver logado, exibe o nome clicável com o menu dropdown */}
-            {usuarioLogado ? (
-              <div ref={menuUsuarioRef} style={{ position: 'relative', display: 'inline-block' }}>
-                <button
-                  type="button"
-                  onClick={() => setMostrarMenuUsuario(!mostrarMenuUsuario)}
-                  style={{
-                    background: 'transparent',
-                    border: 'none',
-                    color: '#fff',
-                    fontSize: '0.875rem',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px',
-                    fontWeight: '500'
-                  }}
-                >
-                  Olá, <strong>{usuarioLogado.nome}</strong> ▾
-                </button>
-
-                {mostrarMenuUsuario && (
-                  <div className="dropdown-usuario-menu">
-                   <button
-  type="button"
-  className="dropdown-item-usuario"
-  onClick={() => {
-    setMostrarMenuUsuario(false);
-    navigate('/meus-pedidos');
-  }}
->   
-                    Meus pedidos
-                  </button>
+            {/* Exibido no Desktop */}
+            <div className="desktop-usuario-area">
+              {usuarioLogado ? (
+                <div ref={menuUsuarioRef} style={{ position: 'relative', display: 'inline-block' }}>
                   <button
-  type="button"
-  className="dropdown-item-usuario"
-  onClick={() => {
-    setMostrarMenuUsuario(false);
-    navigate('/minha-conta');
-  }}
->
-Minha conta
-</button>
-                    <div className="dropdown-divisor"></div>
-                    <button
-                      type="button"
-                      className="dropdown-item-usuario sair"
-                      onClick={handleLogout}
-                    >
-                    Sair
-                    </button>
-                  </div>
-                )}
-              </div>
-            ) : (
-              <Link to="/entrar" className="btn-entrar-header">
-                Entrar
-              </Link>
-            )}
+                    type="button"
+                    onClick={() => setMostrarMenuUsuario(!mostrarMenuUsuario)}
+                    style={{
+                      background: 'transparent',
+                      border: 'none',
+                      color: '#fff',
+                      fontSize: '0.875rem',
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      fontWeight: '500'
+                    }}
+                  >
+                    Olá, <strong>{usuarioLogado.nome}</strong> ▾
+                  </button>
 
+                  {mostrarMenuUsuario && (
+                    <div className="dropdown-usuario-menu">
+                      <button
+                        type="button"
+                        className="dropdown-item-usuario"
+                        onClick={() => {
+                          setMostrarMenuUsuario(false);
+                          navigate('/meus-pedidos');
+                        }}
+                      >
+                        Meus pedidos
+                      </button>
+                      <button
+                        type="button"
+                        className="dropdown-item-usuario"
+                        onClick={() => {
+                          setMostrarMenuUsuario(false);
+                          navigate('/minha-conta');
+                        }}
+                      >
+                        Minha conta
+                      </button>
+                      <div className="dropdown-divisor"></div>
+                      <button
+                        type="button"
+                        className="dropdown-item-usuario sair"
+                        onClick={handleLogout}
+                      >
+                        Sair
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <Link to="/entrar" className="btn-entrar-header">
+                  Entrar
+                </Link>
+              )}
+            </div>
+
+            {/* Carrinho sempre visível */}
             <Link to="/carrinho" className="btn-carrinho-header">
               <div className="icone-carrinho-wrapper">
                 <svg
@@ -192,6 +201,55 @@ Minha conta
             </Link>
           </div>
         </div>
+
+        {/* Menu Dropdown Mobile ativado pelo botão hambúrguer */}
+        {menuMobileAberto && (
+          <div className="mobile-menu-dropdown">
+            {usuarioLogado ? (
+              <>
+                <div className="mobile-menu-user-info">
+                  Olá, <strong>{usuarioLogado.nome}</strong>
+                </div>
+                <button
+                  type="button"
+                  className="mobile-menu-item"
+                  onClick={() => {
+                    setMenuMobileAberto(false);
+                    navigate('/meus-pedidos');
+                  }}
+                >
+                  📦 Meus pedidos
+                </button>
+                <button
+                  type="button"
+                  className="mobile-menu-item"
+                  onClick={() => {
+                    setMenuMobileAberto(false);
+                    navigate('/minha-conta');
+                  }}
+                >
+                  ⚙️ Minha conta
+                </button>
+                <div className="dropdown-divisor"></div>
+                <button
+                  type="button"
+                  className="mobile-menu-item sair"
+                  onClick={handleLogout}
+                >
+                  🚪 Sair
+                </button>
+              </>
+            ) : (
+              <Link
+                to="/entrar"
+                className="mobile-menu-item"
+                onClick={() => setMenuMobileAberto(false)}
+              >
+                🔐 Entrar / Cadastrar
+              </Link>
+            )}
+          </div>
+        )}
 
         <div className="busca-header-container mobile-busca">
           <svg
