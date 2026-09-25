@@ -1,3 +1,7 @@
+# Links:
+https://github.com/laissr/vitrine-alegre
+https://vitrine-alegre-flax.vercel.app/
+
 # Vitrine Alegre — Projeto Front-End React
 
 Aplicação web de e-commerce desenvolvida em React (utilizando Vite) como parte de um projeto acadêmico do Ifes Campus de Alegre (TADS). A loja simula uma vitrine virtual completa com listagem de produtos, paginação, filtros por categoria e ordenação, página de detalhes do produto com galeria de imagens e especificações, além de um carrinho de compras com layout totalmente responsivo (mobile-first).
